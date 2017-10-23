@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -20,7 +21,6 @@ public class SetupActivity extends AppCompatActivity {
     private final int REQUEST_BIND_ACCESSIBILITY_SERVICE_PERMISSION = 100;
     private final int REQUEST_SYSTEM_ALERT_WINDOW_PERMISSION = 200;
     public volatile boolean running = true;
-    public final Toast toast = new Toast(getApplicationContext());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +34,7 @@ public class SetupActivity extends AppCompatActivity {
 
         LayoutInflater inflater = getLayoutInflater();
         View obs_toast = inflater.inflate(R.layout.activity_obscuring_toast, (ViewGroup) findViewById(R.id.obscuring_toast));
+        final Toast toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.FILL, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(obs_toast);
@@ -47,13 +48,11 @@ public class SetupActivity extends AppCompatActivity {
                 }
             }
         });
-        display.run();
-
-        Toast.makeText(this, "Touch Event", Toast.LENGTH_SHORT);
+        display.start();
 
         /** Listen for user touch then use display.stop */
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BIND_ACCESSIBILITY_SERVICE) != PackageManager.PERMISSION_GRANTED) {
+        /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.BIND_ACCESSIBILITY_SERVICE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "No permission Bind Service", Toast.LENGTH_LONG).show();
             //requestPermissions(new String[]{Manifest.permission.BIND_ACCESSIBILITY_SERVICE}, REQUEST_BIND_ACCESSIBILITY_SERVICE_PERMISSION);
 
@@ -62,9 +61,7 @@ public class SetupActivity extends AppCompatActivity {
         } else {
             System.out.println("Permission Granted");
             Toast.makeText(this, "Permission Granted Bind Service", Toast.LENGTH_LONG).show();
-        }
-
-
+        }*/
 
         /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "No permission System Alert", Toast.LENGTH_LONG).show();
@@ -79,6 +76,5 @@ public class SetupActivity extends AppCompatActivity {
         }*/
 
     }
-
 
 }
