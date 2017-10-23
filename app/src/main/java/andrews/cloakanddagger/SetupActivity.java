@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 public class SetupActivity extends AppCompatActivity {
@@ -32,13 +33,15 @@ public class SetupActivity extends AppCompatActivity {
             startActivity(myIntent);
         }
 
-        LayoutInflater inflater = getLayoutInflater();
+        WindowSetup setup = new WindowSetup(this);
+        setup.updatePhase(this, setup.PHASE1);
+
+        /*LayoutInflater inflater = getLayoutInflater();
         View obs_toast = inflater.inflate(R.layout.activity_obscuring_toast, (ViewGroup) findViewById(R.id.obscuring_toast));
         final Toast toast = new Toast(getApplicationContext());
         toast.setGravity(Gravity.FILL, 0, 0);
         toast.setDuration(Toast.LENGTH_LONG);
         toast.setView(obs_toast);
-        toast.show();
 
         Thread display = new Thread(new Runnable() {
             @Override
@@ -48,7 +51,7 @@ public class SetupActivity extends AppCompatActivity {
                 }
             }
         });
-        display.start();
+        display.start();*/
 
         /** Listen for user touch then use display.stop */
 

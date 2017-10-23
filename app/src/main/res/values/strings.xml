@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Cloak and Dagger</string>
+    <string name="button1_text">next</string>
+    <string name="hit_next">To Get Started Hit Next</string>
 </resources>
