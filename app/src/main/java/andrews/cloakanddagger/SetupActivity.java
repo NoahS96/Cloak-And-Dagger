@@ -1,21 +1,11 @@
 package andrews.cloakanddagger;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Toast;
+
 
 public class SetupActivity extends AppCompatActivity {
 
@@ -35,6 +25,7 @@ public class SetupActivity extends AppCompatActivity {
 
         WindowSetup setup = new WindowSetup(this);
         setup.updatePhase(this, setup.PHASE1);
+        setup.updatePhase(this, setup.PHASE2);
 
         /*LayoutInflater inflater = getLayoutInflater();
         View obs_toast = inflater.inflate(R.layout.activity_obscuring_toast, (ViewGroup) findViewById(R.id.obscuring_toast));

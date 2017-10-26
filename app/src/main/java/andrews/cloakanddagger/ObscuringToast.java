@@ -11,7 +11,5 @@ public class ObscuringToast extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_obscuring_toast);
 
-        Button button = (Button) findViewById(R.id.fake_button);
-        button.setClickable(false);
     }
 }
