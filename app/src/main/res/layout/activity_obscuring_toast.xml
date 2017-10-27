@@ -5,7 +5,7 @@
     android:id="@+id/obscuring_toast"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@color/transparentRed"
     android:focusable="false"
     android:focusableInTouchMode="false"
     tools:context="andrews.cloakanddagger.ObscuringToast">

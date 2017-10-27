@@ -11,7 +11,7 @@ public class SetupActivity extends AppCompatActivity {
 
     private final int REQUEST_BIND_ACCESSIBILITY_SERVICE_PERMISSION = 100;
     private final int REQUEST_SYSTEM_ALERT_WINDOW_PERMISSION = 200;
-    public volatile boolean running = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,26 +25,6 @@ public class SetupActivity extends AppCompatActivity {
 
         WindowSetup setup = new WindowSetup(this);
         setup.updatePhase(this, setup.PHASE1);
-        setup.updatePhase(this, setup.PHASE2);
-
-        /*LayoutInflater inflater = getLayoutInflater();
-        View obs_toast = inflater.inflate(R.layout.activity_obscuring_toast, (ViewGroup) findViewById(R.id.obscuring_toast));
-        final Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.FILL, 0, 0);
-        toast.setDuration(Toast.LENGTH_LONG);
-        toast.setView(obs_toast);
-
-        Thread display = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (running) {
-                    toast.show();
-                }
-            }
-        });
-        display.start();*/
-
-        /** Listen for user touch then use display.stop */
 
         /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.BIND_ACCESSIBILITY_SERVICE) != PackageManager.PERMISSION_GRANTED) {
             Toast.makeText(this, "No permission Bind Service", Toast.LENGTH_LONG).show();
