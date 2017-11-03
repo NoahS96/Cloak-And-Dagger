@@ -26,7 +26,6 @@ public class WindowSetup {
     private static WindowManager manager;
     private int width;
     private int height;
-    volatile boolean fin = false;
     volatile View overlaying_view1, overlaying_view2, overlaying_view3, touch_view, padding;
 
 
@@ -50,11 +49,11 @@ public class WindowSetup {
      * are created.
      * @param context
      */
-    public void startToast(Context context) {
+    public void startToast(final Context context) {
 
         final Context parent = context;
 
-        manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        manager = (WindowManager) parent.getSystemService(Context.WINDOW_SERVICE);
 
         padding = View.inflate(context, R.layout.padding_view, null);
         WindowManager.LayoutParams layoutParams_pad = new WindowManager.LayoutParams(width, height, type, flags
@@ -66,7 +65,7 @@ public class WindowSetup {
 
 
         overlaying_view1 = View.inflate(context, R.layout.activity_obscuring_toast, null);
-        WindowManager.LayoutParams layoutParams_obs1 = new WindowManager.LayoutParams(width, 482, type, flags
+        WindowManager.LayoutParams layoutParams_obs1 = new WindowManager.LayoutParams(width, 340, type, flags
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 PixelFormat.TRANSLUCENT);
@@ -75,7 +74,7 @@ public class WindowSetup {
 
         //The touch view is responsible for listening for a touch which calls phase2 when true
         touch_view = View.inflate(context, R.layout.touch_view, null);
-        WindowManager.LayoutParams layoutParams_touch1 = new WindowManager.LayoutParams(width, height - height/3 + 53, type, flags
+        WindowManager.LayoutParams layoutParams_touch1 = new WindowManager.LayoutParams(width, height - height/3 + 195, type, flags
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
@@ -86,7 +85,6 @@ public class WindowSetup {
                 if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
                     System.out.println("!!!!!!!!!!!!!!!!!!!!!!Touch Detected!!!!!!!!!!!!!!!!!!");
                     startPhase2(parent);
-                    fin = true;
                     return true;
                 }
                 return false;
@@ -107,7 +105,7 @@ public class WindowSetup {
         touch_view.setVisibility(View.GONE);
 
         overlaying_view2 = View.inflate(parent, R.layout.obscuring_toast2, null);
-        WindowManager.LayoutParams layoutParams_obs2 = new WindowManager.LayoutParams(width, 310, type, flags
+        WindowManager.LayoutParams layoutParams_obs2 = new WindowManager.LayoutParams(width, 425, type, flags
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
                 PixelFormat.TRANSLUCENT);
@@ -118,7 +116,7 @@ public class WindowSetup {
 
         //The touch view is responsible for listening for a touch which returns true when detected
         touch_view = View.inflate(parent, R.layout.touch_view, null);
-        WindowManager.LayoutParams layoutParams_touch2 = new WindowManager.LayoutParams(width, height - height/3 + 225, type, flags
+        WindowManager.LayoutParams layoutParams_touch2 = new WindowManager.LayoutParams(width, height - height/3 + 110, type, flags
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
@@ -128,7 +126,9 @@ public class WindowSetup {
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
                     System.out.println("!!!!!!!!!!!!!!!!!!!!!!Touch Detected!!!!!!!!!!!!!!!!!!");
-                    startPhase3(parent);
+                    /**startPhase3(parent);*/
+                    overlaying_view1.setVisibility(View.GONE);
+                    touch_view.setVisibility(View.GONE);
                     return true;
                 }
                 return false;
@@ -177,6 +177,14 @@ public class WindowSetup {
                     System.out.println("**********************************WE DID IT!**************************");
                     overlaying_view3.setVisibility(View.GONE);
                     touch_view.setVisibility(View.GONE);
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (Exception e) {
+                        System.err.println("Thread Exception Error: Sleep");
+                    }
+                    ((Activity) parent).finishAndRemoveTask();
+                    System.exit(0);
                     return true;
                 }
                 return false;

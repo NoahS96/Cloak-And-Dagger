@@ -24,7 +24,7 @@ public class SetupActivity extends AppCompatActivity {
 
             /**Opens the accessibility settings screen**/
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                Intent myIntent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+                Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                 startActivity(myIntent);
             }
             WindowSetup setup = new WindowSetup(this);
