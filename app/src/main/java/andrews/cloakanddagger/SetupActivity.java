@@ -27,8 +27,9 @@ public class SetupActivity extends AppCompatActivity {
                 Intent myIntent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
                 startActivity(myIntent);
             }
+
             WindowSetup setup = new WindowSetup(this);
-            setup.startToast(this);
+            //setup.startToast(this);
         } else {
             Toast.makeText(this, "Permission Granted Bind Service", Toast.LENGTH_LONG).show();
         }

