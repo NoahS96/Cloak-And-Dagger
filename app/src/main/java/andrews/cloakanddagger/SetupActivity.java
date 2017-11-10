@@ -24,7 +24,6 @@ public class SetupActivity extends AppCompatActivity {
         WindowSetup setup = new WindowSetup(this);
 
         /**Checks whether the SYSTEM_ALERT permission is granted. If not call the startToast function from the WindowSetup class.**/
-        // Need to fix the permission check. It currently always evaluates to true.
         if (!Settings.canDrawOverlays(this)) {
 
             /**Opens the system overlay settings screen**/
