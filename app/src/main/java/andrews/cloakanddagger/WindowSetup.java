@@ -40,7 +40,6 @@ public class WindowSetup {
         width = size.x;
         height = size.y;
 
-        //KeyloggerManager keyloggerManager = new KeyloggerManager(context, manager, width);
     }
 
     /** If bypassSetup is called then the SYSTEM_ALERT permission should already be granted. This funtion
